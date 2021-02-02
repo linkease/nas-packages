@@ -15,11 +15,11 @@ ifeq ($(ARCH),aarch64)
 endif
 
 PKG_NAME:=ddnsto
-PKG_VERSION:=0.2.8
+PKG_VERSION:=0.2.9
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://firmware.koolshare.cn/binary/ddnsto/
-PKG_HASH:=5a40c5ac090ab2eeda354aa23707b66484d811dea258ed764c4fa645ca6defe8
+PKG_HASH:=4c3528ab37d10407028f38cb8ee83b55f071d398f80b3ef911175a4440f3af03
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
