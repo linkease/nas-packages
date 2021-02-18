@@ -9,10 +9,10 @@ include $(TOPDIR)/rules.mk
 
 PKG_ARCH_DDNSTO:=$(ARCH)
 
-# No aarch64 now
-ifeq ($(ARCH),aarch64)
-	PKG_ARCH_DDNSTO:=arm
-endif
+# Use aarch64 now
+#ifeq ($(ARCH),aarch64)
+#	PKG_ARCH_DDNSTO:=arm
+#endif
 
 PKG_NAME:=ddnsto
 PKG_VERSION:=0.3.0
