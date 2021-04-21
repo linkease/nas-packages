@@ -4,38 +4,30 @@ linkease & ddnsto for openwrt, arm and aarch64 and x86 supported
 
 ## 使用方法
 
-把文件夹拷贝到Openwrt源代码的对应目录里面，拷贝之后为：
+### 增加feed源
 
-```
-./package/feeds/luci/luci-app-ddnsto
-./package/feeds/luci/luci-app-linkease
-
-./package/network/services/linkease
-./package/network/services/ddnsto
-
+```shell
+echo >> feeds.conf.default
+echo 'src-git nas https://github.com/linkease/nas-packages.git;master' >> feeds.conf.default
+./scripts/feeds update nas
+./scripts/feeds install -a -p nas
 ```
 
-### make menuconfig 选择方法
+### 集成软件包
 
-```
+```shell
 make menuconfig
+```
 
-Network --->
-Web Servers/Proxies --->
-<*> ddnsto....................................... DDNS.to - the reverse proxy
-<*> linkease....................................... LinkEase - the file cloud
-
+选择软件包
+```plain
 LuCI --->
 3. Applications --->
 <*> luci-app-ddnsto.................................. LuCI support for ddnsto
 <*> luci-app-linkease.................................. LuCI support for linkease
 ```
 
-### 部分Openwrt老版本兼容性问题
-
-ddnsto安装完成点击配置，需要手动运行命令：
-
+### 构建固件
+```shell
+make
 ```
-/etc/init.d/ddnsto enable
-```
-
