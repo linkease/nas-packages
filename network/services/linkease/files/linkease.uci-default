@@ -5,6 +5,15 @@ uci -q batch <<-EOF >/dev/null
 	add ucitrack linkease
 	set ucitrack.@linkease[-1].init=linkease
 	commit ucitrack
+
+	delete firewall.linkease
+	set firewall.linkease=rule
+	set firewall.linkease.name="linkease"
+	set firewall.linkease.target="ACCEPT"
+	set firewall.linkease.src="wan"
+	set firewall.linkease.proto="tcp"
+	set firewall.linkease.dest_port="8897"
+	commit firewall
 EOF
 
 /etc/init.d/linkease enable

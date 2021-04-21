@@ -40,6 +40,13 @@ define Package/$(PKG_NAME)/conffiles
 /etc/config/linkease
 endef
 
+define Package/$(PKG_NAME)/postinst
+#!/bin/sh
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	[ -f /etc/uci-defaults/linkease ] && /etc/uci-defaults/linkease && rm -f /etc/uci-defaults/linkease
+fi
+endef
+
 define Build/Configure
 endef
 
