@@ -21,6 +21,7 @@ echo "ddnsto version device_id is is:"
 
 _term() {
   killall ddnsto 2>/dev/null
+  killall ddwebdav 2>/dev/null
   exit
 }
 
