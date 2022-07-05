@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_DDNSTO:=$(ARCH)
 
 PKG_NAME:=ddnsto
-PKG_VERSION:=3.0.1
+PKG_VERSION:=3.0.0
 PKG_RELEASE:=$(PKG_ARCH_DDNSTO)-1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://fw.koolcenter.com/binary/ddnsto/
