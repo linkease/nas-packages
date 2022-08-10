@@ -8,22 +8,26 @@ get_config() {
         config_get_bool logger $1 logger 0
         config_get token $1 token
         config_get index $1 index 0
+        config_get_bool feat_enabled $1 feat_enabled 1
 }
 
 ddnsto_prepare() {
-  killall ddnsto 2>/dev/null
-  killall ddwebdav 2>/dev/null
+  killall ddnsto 2>/dev/null &
+  killall ddwebdav 2>/dev/null &
 
-  rm -f /tmp/.ddnsto3.pid
-  rm -f /tmp/.ddnsto3.status
-  rm -f /tmp/.ddnsto3.up
+  rm -f /tmp/.ddnsto3.pid  &
+  rm -f /tmp/.ddnsto3.status  &
+  rm -f /tmp/.ddnsto3.up  &
 }
 
 start_service() {
         ddnsto_prepare
         config_load ddnsto
         config_foreach get_config ddnsto
-        [ $enabled != 1 ] && return 1
+        if [ $enabled != 1 ]; then 
+                return 1
+        fi 
+  
         if [ -z "$token" ]; then
                 logger -t ddnsto -p warn "token not set"
                 return 1
