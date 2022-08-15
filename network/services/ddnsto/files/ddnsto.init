@@ -1,4 +1,4 @@
-#!/bin/sh /etc/rc.common
+#!/bin/ /etc/rc.common
 
 START=99
 USE_PROCD=1
@@ -12,12 +12,8 @@ get_config() {
 }
 
 ddnsto_prepare() {
-  killall ddnsto 2>/dev/null &
-  killall ddwebdav 2>/dev/null &
-
-  rm -f /tmp/.ddnsto3.pid  &
-  rm -f /tmp/.ddnsto3.status  &
-  rm -f /tmp/.ddnsto3.up  &
+  killall ddnstod 2>/dev/null
+  killall ddwebdav 2>/dev/null
 }
 
 start_service() {
@@ -27,14 +23,14 @@ start_service() {
         if [ $enabled != 1 ]; then 
                 return 1
         fi 
-  
+
         if [ -z "$token" ]; then
                 logger -t ddnsto -p warn "token not set"
                 return 1
         fi
         
         procd_open_instance
-        procd_set_param command /usr/sbin/ddnsto -u "$token" -x $index -F
+        procd_set_param command /usr/sbin/ddnstod -u "$token" -x $index -F
         [ "$logger" == 1 ] && procd_set_param stderr 1
         procd_set_param respawn
         procd_close_instance 
