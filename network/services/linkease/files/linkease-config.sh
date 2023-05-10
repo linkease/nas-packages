@@ -17,7 +17,7 @@ case "$1" in
       uci commit
       rm /usr/sbin/preconfig.data
     else
-      data="`uci -q get linkease.@linkease[0].preconfig 2>/dev/null`"
+      data="`uci -q get linkease.@linkease[0].preconfig`"
     fi
 
     if [ -z "${data}" ]; then
@@ -64,10 +64,10 @@ case "$1" in
 
   local_load)
     if [ -f "/etc/config/quickstart" ]; then
-      data="`uci -q get quickstart.main.main_dir 2>/dev/null`"
+      data="`uci -q get quickstart.main.main_dir`"
     fi
     if [ -z "$data" ]; then
-      data="`uci -q get linkease.@linkease[0].local_home 2>/dev/null`"
+      data="`uci -q get linkease.@linkease[0].local_home`"
     fi
 
     if [ -z "${data}" ]; then
