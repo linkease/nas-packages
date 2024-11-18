@@ -64,6 +64,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/quickstart.hotplug $(1)/etc/hotplug.d/block/09-quickstart
 	$(INSTALL_CONF) ./files/quickstart.config $(1)/etc/config/quickstart
 	$(INSTALL_BIN) ./files/dhcpvalid.sh $(1)/usr/libexec/quickstart/dhcpvalid.sh
+	$(INSTALL_BIN) ./files/startdhns.init $(1)/etc/init.d/startdhns
 	$(LN) /usr/sbin/quickstart $(1)/usr/sbin/startdhns
 endef
 
