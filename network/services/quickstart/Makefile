@@ -57,14 +57,14 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/etc/init.d $(1)/etc/uci-defaults $(1)/etc/hotplug.d/block $(1)/etc/config
+	$(INSTALL_DIR) $(1)/usr/sbin $(1)/etc/init.d $(1)/etc/uci-defaults $(1)/etc/hotplug.d/block $(1)/etc/config $(1)/usr/libexec/quickstart
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickstart.$(PKG_ARCH_quickstart) $(1)/usr/sbin/quickstart
 	$(INSTALL_BIN) ./files/quickstart.init $(1)/etc/init.d/quickstart
 	$(INSTALL_BIN) ./files/quickstart.uci-default $(1)/etc/uci-defaults/09-quickstart
 	$(INSTALL_BIN) ./files/quickstart.hotplug $(1)/etc/hotplug.d/block/09-quickstart
 	$(INSTALL_CONF) ./files/quickstart.config $(1)/etc/config/quickstart
-	$(INSTALL_BIN) ./files/dhcpvalid.sh $(1)/usr/sbin/dhcpvalid.sh
-	ln -sf /usr/sbin/quickstart $(1)/usr/bin/startdhns
+	$(INSTALL_BIN) ./files/dhcpvalid.sh $(1)/usr/libexec/quickstart/dhcpvalid.sh
+	$(LN) /usr/sbin/quickstart $(1)/usr/sbin/startdhns
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
