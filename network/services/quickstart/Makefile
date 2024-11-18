@@ -63,6 +63,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/quickstart.uci-default $(1)/etc/uci-defaults/09-quickstart
 	$(INSTALL_BIN) ./files/quickstart.hotplug $(1)/etc/hotplug.d/block/09-quickstart
 	$(INSTALL_CONF) ./files/quickstart.config $(1)/etc/config/quickstart
+	$(INSTALL_BIN) ./files/dhcpvalid.sh $(1)/usr/sbin/dhcpvalid.sh
+	ln -sf /usr/sbin/quickstart $(1)/usr/bin/startdhns
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
