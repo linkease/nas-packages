@@ -66,6 +66,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/dhcpvalid.sh $(1)/usr/libexec/quickstart/dhcpvalid.sh
 	$(INSTALL_BIN) ./files/startdhns.init $(1)/etc/init.d/startdhns
 	$(LN) /usr/sbin/quickstart $(1)/usr/sbin/startdhns
+	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface $(1)/etc/udhcpc.user.d
+	$(INSTALL_BIN) ./files/startdhns.hotplug $(1)/etc/hotplug.d/iface/21-startdhns
+	$(INSTALL_BIN) ./files/startdhns.udhcpc $(1)/etc/udhcpc.user.d/10-startdhns
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

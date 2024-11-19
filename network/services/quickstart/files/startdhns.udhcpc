@@ -1,0 +1,6 @@
+[ "$1" = bound -o "$1" = renew ] || exit 0
+if [ "$interface" != "br-lan" ]; then
+    [ "$(uci -q get network.wan.device)" = "$interface" ] || exit 0
+fi
+
+/usr/sbin/quickstart dhcpChange

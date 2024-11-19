@@ -1,0 +1,3 @@
+if [ "$ACTION" = "ifdown" -a "$INTERFACE" = "planb" ]; then
+    ifup lan
+fi
