@@ -1,14 +1,9 @@
 #!/bin/sh /etc/rc.common
 
-START=91
+START=93
 USE_PROCD=1
 
-boot() {
-	start "BOOT"
-}
-
 start_service() {
-	[ "$1" = BOOT ] && return 0
 	/usr/sbin/quickstart uciChange
 }
 
