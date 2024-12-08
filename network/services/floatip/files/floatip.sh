@@ -133,6 +133,8 @@ main() {
 	fi
 }
 
-[[ -n "$1" && "$1" -ge 0 && "$1" -lt 32 ]] && DEFAULT_PREFIX=$1
+if [[ -n "$1" ]]; then
+	[[ "$1" -ge 0 && "$1" -lt 32 ]] && DEFAULT_PREFIX=$1
+fi
 
 main
