@@ -14,7 +14,7 @@ PKG_VERSION:=0.11.5
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/linkease/istore-packages/releases/download/prebuilt/
-PKG_HASH:=f3ae319974d940f5741cd9fbd295a3a378164e7df82665defa99935608fe733a
+PKG_HASH:=22f112c0af75fa687f7c9838344a0faf0ca39baa4e15bffd69969e53f21ac2a6
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
