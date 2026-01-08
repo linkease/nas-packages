@@ -4,16 +4,11 @@ START=99
 USE_PROCD=1
 
 get_config() {
-        config_get_bool enabled "$1" enabled 1
-        config_get_bool logger  "$1" logger 0
-
-        config_get token  "$1" token
-        config_get index  "$1" index 0
-
-        # new fields (optional)
-        config_get identity_mode "$1" identity_mode ""    # legacy | v2 | ""
-        config_get router_id     "$1" router_id ""        # pinned router id (recommended)
-        config_get name          "$1" name ""             # device display name (optional)
+        config_get_bool enabled $1 enabled 1
+        config_get_bool logger $1 logger 0
+        config_get token $1 token
+        config_get index $1 index 0
+        config_get_bool feat_enabled $1 feat_enabled 1
 }
 
 ddnsto_prepare() {
@@ -29,38 +24,20 @@ start_service() {
         ddnsto_prepare
         config_load ddnsto
         config_foreach get_config ddnsto
-
-        [ "$enabled" = "1" ] || return 1
+        if [ $enabled != 1 ]; then 
+                return 1
+        fi 
 
         if [ -z "$token" ]; then
                 logger -t ddnsto -p warn "token not set"
                 return 1
         fi
-
-        # Build argv safely
-        set -- /usr/sbin/ddnstod -u "$token"
-
-        # optional: pass display name only (does NOT affect identity in new design)
-        [ -n "$name" ] && set -- "$@" -m "$name"
-
-        if [ -n "$router_id" ]; then
-                # Highest priority: pinned id, no need -x
-                set -- "$@" -M "$router_id"
-        else
-                # No pinned id yet: decide by identity_mode
-                # default to legacy for safety (upgrade users)
-                if [ "$identity_mode" = "v2" ]; then
-                        : # v2: do not pass -x
-                else
-                        set -- "$@" -x "$index"
-                fi
-        fi
-
+        
         procd_open_instance
-        procd_set_param command "$@"
-        [ "$logger" = "1" ] && procd_set_param stderr 1
+        procd_set_param command /usr/sbin/ddnstod -u "$token" -x $index -F
+        [ "$logger" == 1 ] && procd_set_param stderr 1
         procd_set_param respawn
-        procd_close_instance
+        procd_close_instance 
 }
 
 service_triggers() {

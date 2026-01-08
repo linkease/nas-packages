@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# 1) Keep original behavior: ucitrack
 uci -q batch <<-EOF >/dev/null
 	delete ucitrack.@ddnsto[-1]
 	add ucitrack ddnsto
@@ -8,30 +7,6 @@ uci -q batch <<-EOF >/dev/null
 	commit ucitrack
 EOF
 
-# 2) Ensure ddnsto config section exists (do not overwrite conffile content)
-uci -q get ddnsto.@ddnsto[0] >/dev/null 2>&1 || {
-	uci -q add ddnsto ddnsto >/dev/null 2>&1
-	uci -q commit ddnsto >/dev/null 2>&1
-}
-
-# 3) New: set identity_mode only if missing
-mode="$(uci -q get ddnsto.@ddnsto[0].identity_mode)"
-
-if [ -z "$mode" ]; then
-	# Heuristic: if user already has token/enabled/address, treat as upgrade -> legacy (safety-first)
-	token="$(uci -q get ddnsto.@ddnsto[0].token)"
-	enabled="$(uci -q get ddnsto.@ddnsto[0].enabled)"
-	address="$(uci -q get ddnsto.@ddnsto[0].address)"
-
-	if [ -n "$token" ] || [ -n "$enabled" ] || [ -n "$address" ]; then
-		uci -q set ddnsto.@ddnsto[0].identity_mode='legacy'
-	else
-		uci -q set ddnsto.@ddnsto[0].identity_mode='v2'
-	fi
-	uci -q commit ddnsto >/dev/null 2>&1
-fi
-
-# 4) Keep original behavior: enable service on boot
 /etc/init.d/ddnsto enable
 
 exit 0
