@@ -25,8 +25,8 @@ ARCH_HEXCODE=1b0c
 endif
 PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_SOURCE_DATE).tar.gz
-PKG_SOURCE_URL:=https://dl.istoreos.com/binary/ddnsto/
-PKG_HASH:=8e3ca3f51cdb06589fe0679655594436fed6335cb9ff3dc78f8a5e69c5de5327
+PKG_SOURCE_URL:=https://fw.koolcenter.com/binary/ddnsto/
+PKG_HASH:=e080b5356bc5e07a2df6c5c92f3814607086eb9159a49837451f328ccae3f14c
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_SOURCE_DATE)
 
