@@ -11,7 +11,7 @@ PKG_ARCH_DDNSTO:=$(ARCH)
 
 PKG_NAME:=ddnsto
 # use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
-PKG_SOURCE_DATE:=4.0.1
+PKG_SOURCE_DATE:=4.0.2
 PKG_RELEASE:=1
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
@@ -25,8 +25,8 @@ ARCH_HEXCODE=1b0c
 endif
 PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_SOURCE_DATE).tar.gz
-PKG_SOURCE_URL:=https://dl.istoreos.com/binary/ddnsto/beta/
-PKG_HASH:=605bce67109e402711fb6689e79f090a472f371084c2b3b8111526fee8adb767
+PKG_SOURCE_URL:=https://fw.koolcenter.com/binary/ddnsto/beta/
+PKG_HASH:=59dbdc98583826461ee2771663681c9b8fcd992d6b6885f1cbf25d20251f7e6d
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_SOURCE_DATE)
 
