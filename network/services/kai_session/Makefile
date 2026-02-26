@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_kai_session:=$(ARCH)
 
 PKG_NAME:=kai_session
-PKG_VERSION:=0.0.2
+PKG_VERSION:=0.0.3
 PKG_RELEASE:=0
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/Carseason/openwrt-packages/releases/download/prebuilt/
-PKG_HASH:=c06437429150cc845bb36d5763dd5d27221817c99369e8db10d4b32e53d2d033
+PKG_SOURCE_URL:=https://github.com/linkease/istore-packages/releases/download/prebuilt/
+PKG_HASH:=40b0fe38b90d3630b8e3cb945afbeed9e1466141b85d389a1afffc138a45eead
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
 PKG_BUILD_PARALLEL:=1
