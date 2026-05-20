@@ -21,19 +21,14 @@ DDNSTO_TYPE?=standard
 $(info DDNSTO_TYPE is set to: $(DDNSTO_TYPE))
 
 # 架构名称映射
-ARCH_NAME:=
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
-ARCH_NAME=x86_64
 ARCH_HEXCODE=8664
 else ifeq ($(ARCH),aarch64)
-ARCH_NAME=aarch64
 ARCH_HEXCODE=aa64
 else ifeq ($(ARCH),arm)
-ARCH_NAME=arm
 ARCH_HEXCODE=aa32
 else ifeq ($(ARCH),mipsel)
-ARCH_NAME=mipsel
 ARCH_HEXCODE=1b0c
 endif
 PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
