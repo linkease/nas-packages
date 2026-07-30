@@ -8,23 +8,22 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linkeasefull
 PKG_SOURCE_DATE:=3.0.4
-PKG_RELEASE:=2
+PKG_RELEASE:=1
 
 ifeq ($(ARCH),x86_64)
 LINKEASE_RUNTIME_ARCH:=amd64
-PKG_HASH:=9e8d7b42d0cfb7ae746a34fb1980978b8a32fc57ac5ad905f27df4229cedeb98
+PKG_HASH:=1f0f2ff6d9c20b16fc62dcaa6598c045a01f03ab6f99a3d44a0c77fe061ed083
 else ifeq ($(ARCH),aarch64)
 LINKEASE_RUNTIME_ARCH:=arm64
-PKG_HASH:=6a02d5a515e80819693609f042a25f0dd005307d54f7111e5ccf730d683743e3
+PKG_HASH:=35d0a7f47958e1aa0a7400ab0cdad12b6378965d2c9b57f76ae908e2d4180feb
 endif
 
 PKG_SOURCE:=linkease-runtime-$(PKG_SOURCE_DATE)-linux-$(LINKEASE_RUNTIME_ARCH).tar.gz
-PKG_SOURCE_URL:=https://github.com/linkease/linkease-desktop/releases/download/linkease-runtime-v$(PKG_SOURCE_DATE)/
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_SOURCE_DATE)
+PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/linkeasefull-runtime-v$(PKG_SOURCE_DATE)/
+PKG_BUILD_DIR:=$(BUILD_DIR)/linkease-runtime-$(PKG_SOURCE_DATE)-linux-$(LINKEASE_RUNTIME_ARCH)
 
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
-TAR_CMD=$(HOST_TAR) -C $(PKG_BUILD_DIR) --strip-components=1 $(TAR_OPTIONS)
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -33,12 +32,12 @@ define Package/$(PKG_NAME)
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=LinkEase Full - the local web desktop
-	DEPENDS:=@(x86_64||aarch64) +linkease +ca-bundle
+	DEPENDS:=@(x86_64||aarch64) +linkease-common-bin +ca-bundle
 	URL:=https://www.linkease.com/
 endef
 
 define Package/$(PKG_NAME)/description
-  LinkEase Full provides the local web desktop entry for LinkEase and reuses the standard LinkEase LuCI file entry.
+  LinkEase Full provides the local web desktop entry for LinkEase and reuses the shared LinkEase file entry.
 endef
 
 define Package/$(PKG_NAME)/conffiles
@@ -60,14 +59,13 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/libexec/linkeasefull/linkmount_bin $(1)/usr/libexec/linkeasefull/scripts $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults
+	$(INSTALL_DIR) $(1)/usr/bin $(1)/usr/libexec/linkeasefull/linkmount_bin $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/linkease-full $(1)/usr/bin/linkease-full
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/linkremote-agent $(1)/usr/bin/linkremote-agent
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/hostlink $(1)/usr/bin/hostlink
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/linkmount_bin/linkmount_bin $(1)/usr/libexec/linkeasefull/linkmount_bin/linkmount_bin
 	$(CP) $(PKG_BUILD_DIR)/linkmount_bin/lib $(1)/usr/libexec/linkeasefull/linkmount_bin/lib
 	$(CP) $(PKG_BUILD_DIR)/linkmount_bin/ver.json $(1)/usr/libexec/linkeasefull/linkmount_bin/ver.json
-	$(CP) $(PKG_BUILD_DIR)/scripts/. $(1)/usr/libexec/linkeasefull/scripts/
 	$(INSTALL_CONF) ./files/linkeasefull.config $(1)/etc/config/linkeasefull
 	$(INSTALL_BIN) ./files/linkeasefull.init $(1)/etc/init.d/linkeasefull
 	$(INSTALL_BIN) ./files/linkeasefull.uci-default $(1)/etc/uci-defaults/linkeasefull
