@@ -9,9 +9,9 @@ include $(TOPDIR)/rules.mk
 
 PKG_ARCH_LINKEASE:=$(ARCH)
 
-PKG_NAME:=linkease
+PKG_NAME:=linkease-common-bin
 PKG_SOURCE_DATE:=1.7.5
-PKG_RELEASE:=4
+PKG_RELEASE:=1
 
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
@@ -28,7 +28,7 @@ PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
 PKG_SOURCE:=linkease-binary-$(PKG_SOURCE_DATE).tar.gz
 PKG_SOURCE_URL:=https://dl.istoreos.com/binary/LinkEase/LinuxStorage/
 PKG_HASH:=f3ae319974d940f5741cd9fbd295a3a378164e7df82665defa99935608fe733a
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_SOURCE_DATE)
+PKG_BUILD_DIR:=$(BUILD_DIR)/linkease-binary-$(PKG_SOURCE_DATE)
 
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
@@ -39,26 +39,14 @@ define Package/$(PKG_NAME)
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
-	TITLE:=LinkEase - the file cloud
-	DEPENDS:=@(arm||x86_64||aarch64) +linkease-common-bin
+	TITLE:=LinkEase common binary tools
+	DEPENDS:=@(arm||x86_64||aarch64)
 	PKGARCH:=all
 	URL:=https://www.linkease.com/
 endef
 
 define Package/$(PKG_NAME)/description
-  LinkEase is a file cloud
-endef
-
-define Package/$(PKG_NAME)/conffiles
-/etc/config/linkease
-endef
-
-define Package/$(PKG_NAME)/postinst
-#!/bin/sh
-if [ -z "$${IPKG_INSTROOT}" ]; then
-	[ -f /etc/uci-defaults/linkease ] && /etc/uci-defaults/linkease && rm -f /etc/uci-defaults/linkease
-	exit 0
-fi
+  Common LinkEase binary tools shared by LinkEase editions.
 endef
 
 define Build/Configure
@@ -68,11 +56,10 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/sbin/linkease-plugins $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/linkease.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/linkease
-	$(INSTALL_CONF) ./files/linkease.config $(1)/etc/config/linkease
-	$(INSTALL_BIN) ./files/linkease.init $(1)/etc/init.d/linkease
-	$(INSTALL_BIN) ./files/linkease.uci-default $(1)/etc/uci-defaults/linkease
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/heif-converter.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/heif-converter
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/linkease-media.$(PKG_ARCH_LINKEASE) $(1)/usr/sbin/linkease-media
+	$(INSTALL_BIN) ./files/linkease-config.sh $(1)/usr/sbin/linkease-config.sh
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
