@@ -10,8 +10,8 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_LINKEASE:=$(ARCH)
 
 PKG_NAME:=linkease-common-bin
-PKG_VERSION:=1.7.5
-PKG_SOURCE_DATE:=$(PKG_VERSION)
+# use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
+PKG_SOURCE_DATE:=1.7.5
 PKG_RELEASE:=2
 
 ARCH_HEXCODE:=
