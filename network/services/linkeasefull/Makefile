@@ -7,8 +7,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linkeasefull
-PKG_VERSION:=3.0.4
-PKG_SOURCE_DATE:=$(PKG_VERSION)
+# use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
+PKG_SOURCE_DATE:=3.0.4
 PKG_RELEASE:=3
 
 ifeq ($(ARCH),x86_64)
