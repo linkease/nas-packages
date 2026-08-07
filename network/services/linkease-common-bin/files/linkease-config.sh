@@ -3,12 +3,15 @@
 . /lib/functions.sh
 
 ensure_linkease_config() {
+	if [ ! -f /etc/config/linkease ]; then
+		touch /etc/config/linkease || return 1
+	fi
 	if ! uci -q get linkease.@linkease[0] >/dev/null; then
-		uci -q add linkease linkease >/dev/null
-		uci -q set linkease.@linkease[0].enabled='0'
-		uci -q set linkease.@linkease[0].port='8897'
-		uci -q set linkease.@linkease[0].allowPublic='0'
-		uci -q commit linkease
+		uci -q add linkease linkease >/dev/null || return 1
+		uci -q set linkease.@linkease[0].enabled='0' || return 1
+		uci -q set linkease.@linkease[0].port='8897' || return 1
+		uci -q set linkease.@linkease[0].allowPublic='0' || return 1
+		uci -q commit linkease || return 1
 	fi
 }
 
@@ -21,7 +24,7 @@ sync_linkeasefull_local_home() {
 
 case "$1" in
   save)
-	ensure_linkease_config
+	ensure_linkease_config || exit 1
 	if [ ! -z "$2" ]; then
 	  uci set "linkease.@linkease[0].preconfig=$2"
 	  uci commit linkease
@@ -29,7 +32,7 @@ case "$1" in
 	;;
 
   load)
-	ensure_linkease_config
+	ensure_linkease_config || exit 1
 	if [ -f "/usr/sbin/preconfig.data" ]; then
 	  data="`cat /usr/sbin/preconfig.data`"
 	  uci set "linkease.@linkease[0].preconfig=${data}"
@@ -48,7 +51,7 @@ case "$1" in
 	;;
 
   local_save)
-	ensure_linkease_config
+	ensure_linkease_config || exit 1
 	if [ ! -z "$2" ]; then
 	  uci set "linkease.@linkease[0].local_home=$2"
 	  uci commit linkease
@@ -83,7 +86,7 @@ case "$1" in
 	;;
 
   local_load)
-	ensure_linkease_config
+	ensure_linkease_config || exit 1
 	if [ -f "/etc/config/quickstart" ]; then
 	  data="`uci -q get quickstart.main.main_dir`"
 	fi
