@@ -65,7 +65,7 @@ read_config() {
 	fi
 	data_root="$data_root_parent/.linkease_data"
 	recycle_root="$data_root_parent/.linkease_recycle"
-	apptunnel_config_dir="/tmp/linkeasefull/apptunnel-config"
+	log_root="/tmp/linkeasefull/logs"
 }
 
 start_service() {
@@ -85,8 +85,8 @@ start_service() {
 
 	rm -f "$LOCAL_API"
 	mkdir -p "$data_root/users/admin" "$data_root/system" "$data_root/tmp" "$recycle_root"
-	mkdir -p "$data_root/apptunnel" "$data_root/mountremote" "$data_root/logs"
-	mkdir -p "$apptunnel_config_dir"
+	mkdir -p "$data_root/config" "$data_root/apptunnel" "$data_root/mountremote"
+	mkdir -p "$log_root"
 
 	# Do not set LINKEASE_CONFIG on OpenWrt. That variable belongs to
 	# Docker/file-backend deployments where users explicitly mount
@@ -112,32 +112,13 @@ start_service() {
 		"LINKEASE_AUTH_PROVIDER=openwrt_luci" \
 		"LINKEASE_EDITION=nas-full" \
 		"KAIPLUS_ENABLED=0" \
-		"LINKEASE_DATA_ROOT=$data_root" \
-		"LINKEASE_RECYCLE_ROOT=$recycle_root" \
 		"LINKEASE_APPTUNNEL_INTERNAL_ADDR=127.0.0.1:19810" \
 		"LINKEASE_APPTUNNEL_LEGACY_ADDR=$LINKEASE_LEGACY_ADDR" \
 		"LINKEASE_APPTUNNEL_LOCAL_API=$LOCAL_API" \
-		"LINKEASE_APPTUNNEL_CONFIG_DIR=$apptunnel_config_dir" \
-		"LINKEASE_APPTUNNEL_DATA_DIR=$data_root/apptunnel" \
-		"LINKEASE_APPTUNNEL_CACHE_DIR=$data_root/apptunnel/cache" \
-		"LINKEASE_APPTUNNEL_RUNTIME_DIR=$data_root/apptunnel/runtime" \
-		"LINKEASE_APPTUNNEL_LOG_DIR=$data_root/logs" \
-		"APPTUNNEL_MOUNTREMOTE_MODE=real" \
 		"APPTUNNEL_MOUNTREMOTE_LINKREMOTE_AGENT_BINARY=/usr/bin/linkremote-agent" \
 		"APPTUNNEL_MOUNTREMOTE_SMBD_BINARY=$LINKEASE_LIBEXEC/linkmount_bin/linkmount_bin" \
-		"APPTUNNEL_MOUNTREMOTE_WORK_DIR=$data_root/mountremote" \
-		"APPTUNNEL_MOUNTREMOTE_SOCKET_DIR=$data_root/mountremote" \
-		"APPTUNNEL_MOUNTREMOTE_SAMBA_DIR=$data_root/mountremote/samba" \
-		"APPTUNNEL_MOUNTREMOTE_STORE_PATH=$data_root/mountremote/mounts.json" \
-		"APPTUNNEL_MOUNTREMOTE_STARTUP_RECONCILE=true" \
-		"APPTUNNEL_MOUNTREMOTE_ROOT_WATCH_DIR=$data_root/mountremote/root-watch" \
-		"APPTUNNEL_MOUNTREMOTE_ALLOWED_MOUNT_PREFIX=$data_root_parent" \
-		"MOUNTREMOTE_ALLOWED_MOUNT_PREFIX=$data_root_parent" \
 		"LINKEASE_LINKMOUNT_BIN=$LINKEASE_LIBEXEC/linkmount_bin/linkmount_bin" \
-		"LINKEASE_LINKMOUNT_LIB_DIR=$LINKEASE_LIBEXEC/linkmount_bin/lib" \
-		"USER_DATA_PATH=$data_root/users/admin" \
-		"SYSTEM_DATA_PATH=$data_root/system" \
-		"TEMP_PATH=$data_root/tmp"
+		"LINKEASE_LINKMOUNT_LIB_DIR=$LINKEASE_LIBEXEC/linkmount_bin/lib"
 	procd_set_param respawn
 	procd_set_param stdout 1
 	procd_set_param stderr 1
