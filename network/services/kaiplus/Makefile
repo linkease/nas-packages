@@ -44,11 +44,14 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/usr/share/kaiplus/www $(1)/usr/share/kaiplus/defaults $(1)/usr/share/kaiplus/helpers $(1)/etc/init.d $(1)/etc/config
+	$(INSTALL_DIR) $(1)/usr/sbin $(1)/usr/share/kaiplus/www $(1)/usr/share/kaiplus/defaults $(1)/usr/share/kaiplus/helpers $(1)/usr/share/linkeasefull/desktop-apps.d $(1)/etc/init.d $(1)/etc/config
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/kaiplus_bin.$(PKG_ARCH_kaiplus) $(1)/usr/sbin/kaiplus_bin
 	$(CP) $(PKG_BUILD_DIR)/www/* $(1)/usr/share/kaiplus/www/
+	$(INSTALL_DATA) ../app-meta-kaiplus/logo.png $(1)/usr/share/kaiplus/www/logo.png
 	$(CP) $(PKG_BUILD_DIR)/defaults/* $(1)/usr/share/kaiplus/defaults/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/helpers/kaiplus_workspace_tool.* $(1)/usr/share/kaiplus/helpers/
+	$(INSTALL_DATA) ./files/kaiplus-plugin.json $(1)/usr/share/kaiplus/kaiplus-plugin.json
+	ln -sf /usr/share/kaiplus/kaiplus-plugin.json $(1)/usr/share/linkeasefull/desktop-apps.d/00-kaiplus-plugin.json
 	$(INSTALL_BIN) ./files/kaiplus.init $(1)/etc/init.d/kaiplus
 	$(INSTALL_CONF) ./files/kaiplus.config $(1)/etc/config/kaiplus
 endef
