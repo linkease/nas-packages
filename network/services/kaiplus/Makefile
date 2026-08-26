@@ -19,6 +19,11 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
+KAIPLUS_LOGO:=./files/logo.png
+ifneq ($(wildcard ../app-meta-kaiplus/logo.png),)
+KAIPLUS_LOGO:=../app-meta-kaiplus/logo.png
+endif
+
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
@@ -57,7 +62,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/sbin $(1)/usr/share/kaiplus/www $(1)/usr/share/kaiplus/defaults $(1)/usr/share/kaiplus/helpers $(1)/usr/share/linkeasefull/desktop-apps.d $(1)/etc/init.d $(1)/etc/config
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/kaiplus_bin.$(PKG_ARCH_kaiplus) $(1)/usr/sbin/kaiplus_bin
 	$(CP) $(PKG_BUILD_DIR)/www/* $(1)/usr/share/kaiplus/www/
-	$(INSTALL_DATA) ../app-meta-kaiplus/logo.png $(1)/usr/share/kaiplus/www/logo.png
+	$(INSTALL_DATA) $(KAIPLUS_LOGO) $(1)/usr/share/kaiplus/www/logo.png
 	$(CP) $(PKG_BUILD_DIR)/defaults/* $(1)/usr/share/kaiplus/defaults/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/helpers/kaiplus_workspace_tool.* $(1)/usr/share/kaiplus/helpers/
 	$(INSTALL_DATA) ./files/kaiplus-plugin.json $(1)/usr/share/kaiplus/kaiplus-plugin.json
