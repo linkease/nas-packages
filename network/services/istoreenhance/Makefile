@@ -34,11 +34,6 @@ KSPEEDER_WEB_ROOT:=$(PKG_BUILD_DIR)/wwwroot
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
-ISTOREENHANCE_LOGO:=./files/logo.png
-ifneq ($(wildcard ../app-meta-istoreenhance/logo.png),)
-ISTOREENHANCE_LOGO:=../app-meta-istoreenhance/logo.png
-endif
-
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
@@ -96,7 +91,7 @@ define Package/$(PKG_NAME)/install
 		$(INSTALL_DATA) ./files/www/desktop-entry.js $(1)/usr/share/kspeeder/www/desktop-entry.js; \
 		$(INSTALL_DATA) ./files/www/index.html $(1)/usr/share/kspeeder/www/index.html; \
 	fi
-	$(INSTALL_DATA) $(ISTOREENHANCE_LOGO) $(1)/usr/share/kspeeder/www/logo.png
+	$(INSTALL_DATA) ./files/logo.png $(1)/usr/share/kspeeder/www/logo.png
 	ln -sf /usr/share/kspeeder/kspeeder-plugin.json $(1)/usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json
 endef
 
