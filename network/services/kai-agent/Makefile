@@ -32,7 +32,11 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)
-	$(CP) $(PKG_BUILD_DIR)/* $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
+	$(CP) $(PKG_BUILD_DIR)/agents $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
+	$(CP) $(PKG_BUILD_DIR)/skills $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/home-prompts.json $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/manifest.json $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/opencode.json $(1)/usr/share/kai/agent-bundles/$(PKG_VERSION)/
 	$(LN) agent-bundles/$(PKG_VERSION) $(1)/usr/share/kai/agent
 endef
 
