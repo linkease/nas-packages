@@ -30,12 +30,25 @@ unlock_updown() {
 	flock -u 201
 }
 
+announce_ip() {
+	local ipaddr="${1%/*}"
+	# Update both RFC-compliant and less tolerant ARP caches. Without these
+	# announcements, clients can keep sending the floating IP to the failed
+	# gateway's MAC until their neighbour entry expires.
+	arping -q -U -c 3 -w 2 -I "$LAN_IFACE" "$ipaddr" || true
+	arping -q -A -c 3 -w 2 -I "$LAN_IFACE" "$ipaddr" || true
+}
+
 set_up() {
 	local ipaddr="$1"
 	try_lock_updown || return 1
 	echo "set my floatip to $ipaddr" >&2
-	ip addr add "$ipaddr" dev "$LAN_IFACE"
+	ip addr add "$ipaddr" dev "$LAN_IFACE" || {
+		unlock_updown
+		return 1
+	}
 	echo "ip addr del \"$ipaddr\" dev \"$LAN_IFACE\"" > /tmp/run/floatip_cleanup.sh
+	announce_ip "$ipaddr"
 	unlock_updown
 	return 0
 }
