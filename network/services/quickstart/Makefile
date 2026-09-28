@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_quickstart:=$(ARCH)
 
 PKG_NAME:=quickstart
-PKG_VERSION:=0.13.0
+PKG_VERSION:=0.15.0-test20260928
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/linkease/istore-packages/releases/download/prebuilt/
-PKG_HASH:=40eeaba1fbb4cfb732cb5c4759103d9307cb46b83f98b4514934d3e13e8c945b
+PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/quickstart-runtime-v$(PKG_VERSION)/
+PKG_HASH:=d541d86cb3e0f1ee14d9b29cbd13a01f290826dfff3db869944897a7faf3d1cd
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
@@ -39,6 +39,15 @@ endef
 
 define Package/$(PKG_NAME)/conffiles
 /etc/config/quickstart
+/etc/quickstart/device-classifications.json
+/etc/quickstart/device-profiles.json
+/etc/quickstart/manual-devices.json
+/etc/quickstart/device-groups.json
+/etc/quickstart/traffic-insights.json
+/etc/quickstart/device-policy-effects-v1.json
+/etc/quickstart/task-transactions-v1.json
+/etc/quickstart/lan-device-model-v1.json
+/etc/quickstart/network-audit.json
 endef
 
 define Package/$(PKG_NAME)/postinst
