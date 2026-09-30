@@ -9,9 +9,14 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=quickstart-netpolicy
 PKG_VERSION:=0.2.0-test20260928
 PKG_RELEASE:=1
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-x86_64-unknown-linux-musl.tar.gz
+NETPOLICY_TARGET_x86_64:=x86_64-unknown-linux-musl
+NETPOLICY_TARGET_aarch64:=aarch64-unknown-linux-musl
+NETPOLICY_TARGET:=$(NETPOLICY_TARGET_$(ARCH))
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(NETPOLICY_TARGET).tar.gz
 PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/quickstart-runtime-v0.15.0-test20260928/
-PKG_HASH:=a2602b4b4889ea306f50560302c38bdfb5582cc05f90abb22f4e7f8f51f07827
+PKG_HASH_x86_64:=a2602b4b4889ea306f50560302c38bdfb5582cc05f90abb22f4e7f8f51f07827
+PKG_HASH_aarch64:=d49ce90f9093d903eefaef4bd801d93eade751d6145b6281192ec64250c13843
+PKG_HASH:=$(PKG_HASH_$(ARCH))
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 PKG_BUILD_PARALLEL:=1
@@ -25,7 +30,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=Quickstart native network policy engine
 	URL:=https://github.com/istoreos/quickstart-netpolicy
-	DEPENDS:=@(x86_64) +ca-bundle
+	DEPENDS:=@(x86_64||aarch64) +ca-bundle
 endef
 
 define Package/$(PKG_NAME)/description
