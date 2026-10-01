@@ -44,7 +44,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=LinkEase - the file cloud
 	DEPENDS:=@(arm||x86_64||aarch64) +linkease-common-bin
-	EXTRA_DEPENDS:=linkease-common-bin (>=1.7.6~)
+	EXTRA_DEPENDS:=linkease-common-bin (>=1.7.6~0)
 	PKGARCH:=all
 	URL:=https://www.linkease.com/
 endef
