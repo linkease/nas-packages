@@ -11,7 +11,7 @@ PKG_ARCH_ISTOREENHANCE:=$(ARCH)
 
 PKG_NAME:=istoreenhance
 # use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
-PKG_SOURCE_DATE:=0.8.1
+PKG_SOURCE_DATE:=0.8.4
 PKG_RELEASE:=1
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
@@ -26,7 +26,7 @@ endif
 PKG_SOURCE_VERSION:=$(ARCH_HEXCODE)
 PKG_SOURCE:=iStoreEnhance-binary-$(PKG_SOURCE_DATE).tar.gz
 PKG_SOURCE_URL:=https://github.com/kspeeder/docker_kspeeder/releases/download/v$(PKG_SOURCE_DATE)/
-PKG_HASH:=eb95a8552428def9b6a87a06ad88261c8de9a3abb3ed2f81ef512f9f66c41f9d
+PKG_HASH:=73f2cdb72b0f073af787fc615ae1ad21d2654033e91e3fc88e7fbb9374dd53f9
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/iStoreEnhance-binary-$(PKG_SOURCE_DATE)
 KSPEEDER_WEB_ROOT:=$(PKG_BUILD_DIR)/wwwroot
@@ -41,7 +41,7 @@ define Package/$(PKG_NAME)
 	CATEGORY:=Network
 	SUBMENU:=Web Servers/Proxies
 	TITLE:=iStoreEnhance - Fix some net issues for istore
-	DEPENDS:=@(arm||x86_64||aarch64) +linkease-app-entry
+	DEPENDS:=@(arm||x86_64||aarch64) +linkease-app-entry +ks-cli
 	PKGARCH:=all
 	URL:=https://www.kspeeder.com/
 endef
