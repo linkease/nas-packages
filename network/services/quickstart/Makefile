@@ -10,11 +10,11 @@ include $(TOPDIR)/rules.mk
 PKG_ARCH_quickstart:=$(ARCH)
 
 PKG_NAME:=quickstart
-PKG_VERSION:=0.15.0-test20260928
+PKG_VERSION:=0.17.0-test20261022
 PKG_RELEASE:=1
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/quickstart-runtime-v$(PKG_VERSION)/
-PKG_HASH:=d541d86cb3e0f1ee14d9b29cbd13a01f290826dfff3db869944897a7faf3d1cd
+PKG_HASH:=af844d40f1c83b8c9fcd8cbe9aa8713831a9cbf4332acd3e49f08404c2a07308
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-binary-$(PKG_VERSION)
 
@@ -22,6 +22,9 @@ PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
 include $(INCLUDE_DIR)/package.mk
+
+# Runtime manifests cover these prebuilt bytes; do not strip them again.
+RSTRIP:=:
 
 define Package/$(PKG_NAME)
 	SECTION:=net
@@ -39,6 +42,14 @@ endef
 
 define Package/$(PKG_NAME)/conffiles
 /etc/config/quickstart
+/etc/quickstart/home-layout.json
+/etc/quickstart/home-layout.json.bak
+/etc/quickstart/home-layout.json.damaged
+/etc/quickstart/home-layout.json.bak.damaged
+/etc/quickstart/home-launcher.json
+/etc/quickstart/home-launcher.json.bak
+/etc/quickstart/home-launcher.json.damaged
+/etc/quickstart/home-launcher.json.bak.damaged
 /etc/quickstart/device-classifications.json
 /etc/quickstart/device-profiles.json
 /etc/quickstart/manual-devices.json
@@ -81,6 +92,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./files/startdhns.hotplug $(1)/etc/hotplug.d/iface/21-startdhns
 	$(INSTALL_DIR) $(1)/usr/share/quickstart
 	$(INSTALL_DATA) ./files/manuf $(1)/usr/share/quickstart/manuf
+	$(INSTALL_DIR) $(1)/lib/upgrade/keep.d
+	$(INSTALL_DATA) ./files/quickstart.keep $(1)/lib/upgrade/keep.d/quickstart
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

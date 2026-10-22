@@ -8,14 +8,14 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=quickstart-netpolicy
 PKG_VERSION:=0.2.0-test20260928
-PKG_RELEASE:=1
+PKG_RELEASE:=3
 NETPOLICY_TARGET_x86_64:=x86_64-unknown-linux-musl
 NETPOLICY_TARGET_aarch64:=aarch64-unknown-linux-musl
 NETPOLICY_TARGET:=$(NETPOLICY_TARGET_$(ARCH))
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(NETPOLICY_TARGET).tar.gz
-PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/quickstart-runtime-v0.15.0-test20260928/
-PKG_HASH_x86_64:=a2602b4b4889ea306f50560302c38bdfb5582cc05f90abb22f4e7f8f51f07827
-PKG_HASH_aarch64:=d49ce90f9093d903eefaef4bd801d93eade751d6145b6281192ec64250c13843
+PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/quickstart-runtime-v0.17.0-test20261022/
+PKG_HASH_x86_64:=943a330db2a7ea3703f95aba80b50f7eb2a91cbfef96a10ea24ffac74f1c3927
+PKG_HASH_aarch64:=535e52b6e5f9c1a2dbced20fffc7c384ad3f7e00f28ae1be4fa3a910eafd5766
 PKG_HASH:=$(PKG_HASH_$(ARCH))
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -23,6 +23,9 @@ PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
 include $(INCLUDE_DIR)/package.mk
+
+# The packaged ELF must match binarySha256 in the runtime manifest.
+RSTRIP:=:
 
 define Package/$(PKG_NAME)
 	SECTION:=net
