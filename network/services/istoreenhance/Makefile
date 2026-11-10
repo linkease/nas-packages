@@ -12,7 +12,7 @@ PKG_ARCH_ISTOREENHANCE:=$(ARCH)
 PKG_NAME:=istoreenhance
 # use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
 PKG_SOURCE_DATE:=0.9.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
 ARCH_HEXCODE=8664
@@ -56,6 +56,13 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
+# Retire only this package-owned legacy registration.
+root="$${IPKG_INSTROOT:-}"
+legacy="$${root}/usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json"
+if [ "$$(readlink "$${legacy}" 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
+	rm -f "$${legacy}"
+fi
+rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 if [ -z "$${IPKG_INSTROOT}" ]; then
 	[ -f /etc/uci-defaults/istoreenhance ] && /etc/uci-defaults/istoreenhance && rm -f /etc/uci-defaults/istoreenhance
 	exit 0
@@ -64,13 +71,10 @@ endef
 
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
-if [ "$${IPKG_INSTROOT}" = "" ]; then
-	if [ "$$(readlink /usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
-		rm -f /usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json
-	fi
-	if [ "$$(readlink /usr/share/linkease/apps.d/20-kspeeder.json 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
-		rm -f /usr/share/linkease/apps.d/20-kspeeder.json
-	fi
+root="$${IPKG_INSTROOT:-}"
+registration="$${root}/usr/share/linkease/apps.d/20-kspeeder.json"
+if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
+	rm -f "$${registration}"
 fi
 exit 0
 endef
@@ -82,7 +86,7 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults $(1)/usr/share/kspeeder/www $(1)/usr/share/linkease/apps.d $(1)/usr/share/linkeasefull/desktop-apps.d
+	$(INSTALL_DIR) $(1)/usr/sbin $(1)/etc/config $(1)/etc/init.d $(1)/etc/uci-defaults $(1)/usr/share/kspeeder/www $(1)/usr/share/linkease/apps.d
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/iStoreEnhance.$(PKG_ARCH_ISTOREENHANCE) $(1)/usr/sbin/iStoreEnhance
 	$(INSTALL_CONF) ./files/istoreenhance.config $(1)/etc/config/istoreenhance
 	$(INSTALL_BIN) ./files/istoreenhance.init $(1)/etc/init.d/istoreenhance
@@ -92,7 +96,6 @@ define Package/$(PKG_NAME)/install
 		$(CP) $(KSPEEDER_WEB_ROOT)/* $(1)/usr/share/kspeeder/www/; \
 	fi
 	$(INSTALL_DATA) ./files/logo.png $(1)/usr/share/kspeeder/www/logo.png
-	ln -sf /usr/share/kspeeder/kspeeder-plugin.json $(1)/usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json
 	ln -sf /usr/share/kspeeder/kspeeder-plugin.json $(1)/usr/share/linkease/apps.d/20-kspeeder.json
 endef
 
