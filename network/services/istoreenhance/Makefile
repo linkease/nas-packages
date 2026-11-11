@@ -12,7 +12,7 @@ PKG_ARCH_ISTOREENHANCE:=$(ARCH)
 PKG_NAME:=istoreenhance
 # use PKG_SOURCE_DATE instead of PKG_VERSION for compitable
 PKG_SOURCE_DATE:=0.9.0
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 ARCH_HEXCODE:=
 ifeq ($(ARCH),x86_64)
 ARCH_HEXCODE=8664
@@ -56,13 +56,13 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-# Retire only this package-owned legacy registration.
+# Compatibility entry for desktops which only scan the old directory.
 root="$${IPKG_INSTROOT:-}"
 legacy="$${root}/usr/share/linkeasefull/desktop-apps.d/20-kspeeder.json"
-if [ "$$(readlink "$${legacy}" 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
-	rm -f "$${legacy}"
+if [ ! -e "$${legacy}" ] && [ ! -L "$${legacy}" ]; then
+	mkdir -p "$${legacy%/*}"
+	ln -s /usr/share/kspeeder/kspeeder-plugin.json "$${legacy}" || exit $$?
 fi
-rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 if [ -z "$${IPKG_INSTROOT}" ]; then
 	[ -f /etc/uci-defaults/istoreenhance ] && /etc/uci-defaults/istoreenhance && rm -f /etc/uci-defaults/istoreenhance
 	exit 0
@@ -72,10 +72,13 @@ endef
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
 root="$${IPKG_INSTROOT:-}"
-registration="$${root}/usr/share/linkease/apps.d/20-kspeeder.json"
-if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
-	rm -f "$${registration}"
-fi
+for directory in /usr/share/linkease/apps.d /usr/share/linkeasefull/desktop-apps.d; do
+	registration="$${root}$${directory}/20-kspeeder.json"
+	if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/kspeeder/kspeeder-plugin.json" ]; then
+		rm -f "$${registration}"
+	fi
+done
+rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 exit 0
 endef
 

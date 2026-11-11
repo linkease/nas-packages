@@ -10,7 +10,7 @@ PKG_ARCH_DOCKERMANAGER:=$(ARCH)
 
 PKG_NAME:=dockermanager
 PKG_VERSION:=0.1.2
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/dockermanager-runtime-v$(PKG_VERSION)/
 PKG_HASH:=1ecaa4363b1a20a26c31a36f994e94a8064ed0de67cd612a233fc05f5026726a
@@ -39,23 +39,26 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-# Retire only this package-owned legacy registration.
+# Compatibility entry for desktops which only scan the old directory.
 root="$${IPKG_INSTROOT:-}"
 legacy="$${root}/usr/share/linkeasefull/desktop-apps.d/20-dockermanager-plugin.json"
-if [ "$$(readlink "$${legacy}" 2>/dev/null)" = "/usr/share/dockermanager/dockermanager-plugin.json" ]; then
-	rm -f "$${legacy}"
+if [ ! -e "$${legacy}" ] && [ ! -L "$${legacy}" ]; then
+	mkdir -p "$${legacy%/*}"
+	ln -s /usr/share/dockermanager/dockermanager-plugin.json "$${legacy}" || exit $$?
 fi
-rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 exit 0
 endef
 
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
 root="$${IPKG_INSTROOT:-}"
-registration="$${root}/usr/share/linkease/apps.d/20-dockermanager-plugin.json"
-if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/dockermanager/dockermanager-plugin.json" ]; then
-	rm -f "$${registration}"
-fi
+for directory in /usr/share/linkease/apps.d /usr/share/linkeasefull/desktop-apps.d; do
+	registration="$${root}$${directory}/20-dockermanager-plugin.json"
+	if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/dockermanager/dockermanager-plugin.json" ]; then
+		rm -f "$${registration}"
+	fi
+done
+rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 exit 0
 endef
 

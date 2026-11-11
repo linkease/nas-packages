@@ -11,7 +11,7 @@ PKG_ARCH_BAIDUDRIVE:=$(ARCH)
 
 PKG_NAME:=baidudrive
 PKG_VERSION:=1.0.6
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 PKG_SOURCE:=$(PKG_NAME)-binary-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/istoreos/istoreos-app-hub/releases/download/baidudrive-runtime-v$(PKG_VERSION)/
 PKG_HASH:=2cc12327dbe08f0b9906c6213e7f14c0cdc09cae5a5c64e353639e7bd3d34a01
@@ -43,23 +43,26 @@ endef
 
 define Package/$(PKG_NAME)/postinst
 #!/bin/sh
-# Retire only this package-owned legacy registration.
+# Compatibility entry for desktops which only scan the old directory.
 root="$${IPKG_INSTROOT:-}"
 legacy="$${root}/usr/share/linkeasefull/desktop-apps.d/10-baidudrive-plugin.json"
-if [ "$$(readlink "$${legacy}" 2>/dev/null)" = "/usr/share/baidudrive/baidudrive-plugin.json" ]; then
-	rm -f "$${legacy}"
+if [ ! -e "$${legacy}" ] && [ ! -L "$${legacy}" ]; then
+	mkdir -p "$${legacy%/*}"
+	ln -s /usr/share/baidudrive/baidudrive-plugin.json "$${legacy}" || exit $$?
 fi
-rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 exit 0
 endef
 
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
 root="$${IPKG_INSTROOT:-}"
-registration="$${root}/usr/share/linkease/apps.d/10-baidudrive-plugin.json"
-if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/baidudrive/baidudrive-plugin.json" ]; then
-	rm -f "$${registration}"
-fi
+for directory in /usr/share/linkease/apps.d /usr/share/linkeasefull/desktop-apps.d; do
+	registration="$${root}$${directory}/10-baidudrive-plugin.json"
+	if [ "$$(readlink "$${registration}" 2>/dev/null)" = "/usr/share/baidudrive/baidudrive-plugin.json" ]; then
+		rm -f "$${registration}"
+	fi
+done
+rmdir "$${root}/usr/share/linkeasefull/desktop-apps.d" 2>/dev/null || true
 exit 0
 endef
 
