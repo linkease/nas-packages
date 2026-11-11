@@ -59,7 +59,6 @@
     "portFromUci": "fastnet.@fastnet[0].port",
     "defaultPort": 3200,
     "upstreamBasePath": "/",
-    "pathMode": "strip-public-base",
-    "proxyMode": "app-base"
+    "pathMode": "strip-public-base"
   }
 }
