@@ -7,12 +7,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=linkeasefull-web
-PKG_VERSION:=0.1.36
+PKG_VERSION:=0.1.37
 PKG_RELEASE:=1
 
 LINKEASE_WEB_VARIANT:=nas-full
 LINKEASE_WEB_SOURCE_PATH:=web/v1/core/$(PKG_NAME)/$(PKG_VERSION)/$(LINKEASE_WEB_VARIANT)
 LINKEASE_WEB_SOURCE_URLS:= \
+	https://github.com/istoreos/istoreos-app-hub/releases/download/linkeasefull-web-v$(PKG_VERSION) \
 	https://fw.linkease.com/binary/LinkEase/$(LINKEASE_WEB_SOURCE_PATH) \
 	https://dl.istoreos.com/binary/LinkEase/$(LINKEASE_WEB_SOURCE_PATH) \
 	https://fw.d4ctech.com/binary/LinkEase/$(LINKEASE_WEB_SOURCE_PATH) \
@@ -36,14 +37,14 @@ define Download/linkeasefull-web-archive
 	URL:=$(LINKEASE_WEB_SOURCE_URLS)
 	URL_FILE:=desktop-shell.web.zip
 	FILE:=$(LINKEASE_WEB_ARCHIVE_DOWNLOAD)
-	HASH:=d4399ca78e7089b36751c53806214c3f8a4bd8cacfde923453653aea473ea8a7
+	HASH:=455d2c5165ffcd6a9e3d6b0cf6cf7f59d3526d8b86fc2abb945e83358e492ae4
 endef
 
 define Download/linkeasefull-nas-archive
 	URL:=$(LINKEASE_WEB_SOURCE_URLS)
 	URL_FILE:=linkease-nas-web.zip
 	FILE:=$(LINKEASE_NAS_ARCHIVE_DOWNLOAD)
-	HASH:=39bfd822ed459e14c76856326677c48edfb9a14fff123ab3e4f9c34919640ecb
+	HASH:=b25737855e8014f2c90ee4af586b77d2091f21ec600438729f0cb3aeaffbbd3a
 endef
 
 define Download/linkeasefull-nas-registration
@@ -57,14 +58,14 @@ define Download/linkeasefull-web-release-set
 	URL:=$(LINKEASE_WEB_SOURCE_URLS)
 	URL_FILE:=release-set.json
 	FILE:=$(LINKEASE_WEB_RELEASE_SET_DOWNLOAD)
-	HASH:=5bebb857816da9070fface2dd25a54d749c96e90e3ca5084f5ea80a13086e8f8
+	HASH:=8af578e5899e7c06f7af3cd85b451ddba9ee2ebd7d8e73b34e72ae987c7b9847
 endef
 
 define Download/linkeasefull-web-package
 	URL:=$(LINKEASE_WEB_SOURCE_URLS)
 	URL_FILE:=package.json
 	FILE:=$(LINKEASE_WEB_PACKAGE_DOWNLOAD)
-	HASH:=0266f0c50f9f9935ad0d9e13e6c8e07734672a95149ae5272ad42408f323dd2b
+	HASH:=d57b73cb0019fe47d3c49910b9ec644a0b88d0390b5b5aead2446be32921f976
 endef
 
 define Package/$(PKG_NAME)
